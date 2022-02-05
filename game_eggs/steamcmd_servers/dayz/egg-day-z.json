@@ -1,12 +1,13 @@
 {
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
     "meta": {
         "version": "PTDL_v1",
         "update_url": null
     },
-    "exported_at": "2021-11-26T13:51:11+01:00",
+    "exported_at": "2022-02-05T19:10:38+01:00",
     "name": "DayZ",
     "author": "nkempers@outlook.de",
-    "description": "Wie lange überlebst du in einer apokalyptischen Welt? Das Land wurde von Zombies überrannt. Du kämpfst mit anderen Überlebenden um Ressourcen. Schließt du dich mit Fremden zusammen, um zu überleben, oder wirst du niemandem vertrauen? Das ist DayZ – deine Geschichte.",
+    "description": "Wie lange \u00fcberlebst du in einer apokalyptischen Welt? Das Land wurde von Zombies \u00fcberrannt. Du k\u00e4mpfst mit anderen \u00dcberlebenden um Ressourcen. Schlie\u00dft du dich mit Fremden zusammen, um zu \u00fcberleben, oder wirst du niemandem vertrauen? Das ist DayZ \u2013 deine Geschichte.",
     "features": null,
     "images": [
         "ghcr.io\/parkervcp\/games:arma3"
@@ -14,19 +15,20 @@
     "file_denylist": [],
     "startup": ".\/{{SERVER_BINARY}} -ip=0.0.0.0 -port={{SERVER_PORT}} -profiles=.\/serverprofile -bepath=.\/battleye -config=server.cfg -mod=\\\"{{CLIENT_MODS}}\\\" -serverMod=\\\"{{SERVERMODS}}\\\" {{STARTUP_PARAMS}}",
     "config": {
-        "files": "{\r\n    \"server.cfg\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"password=\": \"password = \\\"{{env.SERVER_PASSWORD}}\\\";\",\r\n            \"\/\/password=\": \"password = \\\"{{env.SERVER_PASSWORD}}\\\";\",\r\n            \"password =\": \"password = \\\"{{env.SERVER_PASSWORD}}\\\";\",\r\n            \"\/\/password =\": \"password = \\\"{{env.SERVER_PASSWORD}}\\\";\",\r\n            \"maxPlayers\": \"maxPlayers = {{env.MAX_PLAYERS}};\",\r\n        }\r\n    }\r\n}",
+        "files": "{\r\n    \"server.cfg\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"password=\": \"password = \\\"{{env.SERVER_PASSWORD}}\\\";\",\r\n            \"\/\/password=\": \"password = \\\"{{env.SERVER_PASSWORD}}\\\";\",\r\n            \"password =\": \"password = \\\"{{env.SERVER_PASSWORD}}\\\";\",\r\n            \"\/\/password =\": \"password = \\\"{{env.SERVER_PASSWORD}}\\\";\",\r\n            \"maxPlayers\": \"maxPlayers = {{env.MAX_PLAYERS}};\"\r\n        }\r\n    }\r\n}",
         "startup": "{\r\n    \"done\": \"Host identity created.\"\r\n}",
         "logs": "{}",
         "stop": "^CC"
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/bash\r\n\r\n## File: Dayz Egg - egg-dayz.json\r\n## Author: Noah Kempers (Schmoaaaaah)\r\n## Date: 2022\/02\/05\r\n## License: MIT License\r\n\r\napt -y update\r\napt -y --no-install-recommends install curl lib32gcc-s1 ca-certificates\r\n\r\n# Download and install SteamCMD\r\ncd \/tmp\r\nmkdir -p \"\/mnt\/server\/steamcmd\" \"\/mnt\/server\/steamapps\"\r\ncurl -sSL -o steamcmd.tar.gz https:\/\/steamcdn-a.akamaihd.net\/client\/installer\/steamcmd_linux.tar.gz\r\ntar -xzvf steamcmd.tar.gz -C \/mnt\/server\/steamcmd\r\ncd \/mnt\/server\/steamcmd\r\n\r\n# SteamCMD fails otherwise for some reason, even running as root.\r\n# This is changed at the end of the install process anyways.\r\nchown -R root:root \/mnt\r\nexport HOME=\/mnt\/server\r\n\r\n# Install game server using SteamCMD\r\n.\/steamcmd.sh +force_install_dir \/mnt\/server \"+login \\\"${STEAM_USER}\\\" \\\"${STEAM_PASS}\\\"\" +app_update ${STEAMCMD_APPID} ${STEAMCMD_EXTRA_FLAGS} validate +quit\r\n\r\n# Set up 32 bit libraries\r\nmkdir -p \/mnt\/server\/.steam\/sdk32\r\ncp -v linux32\/steamclient.so ..\/.steam\/sdk32\/steamclient.so\r\n\r\n# Set up 64 bit libraries\r\nmkdir -p \/mnt\/server\/.steam\/sdk64\r\ncp -v linux64\/steamclient.so ..\/.steam\/sdk64\/steamclient.so\r\n\r\n# Arma 3 setup\r\ncd \/mnt\/server\/\r\n\r\nmkdir -p \"\/mnt\/server\/.local\/share\/DayZ\" \"\/mnt\/server\/.local\/share\/DayZ - Other Profiles\"\r\n\r\n[[ -f basic.cfg ]] || curl -sSLO ${BASIC_URL}\r\n[[ -f server.cfg ]] || curl -sSLO ${BASIC_URL%\/*}\/server.cfg\r\nchmod 755 basic.cfg server.cfg",
+            "script": "#!\/bin\/bash\r\n\r\n## File: Pterodactyl DayZ Egg - egg-dayz.json\r\n## Author: Noah Kempers\r\n## Date: 2022\/02\/05\r\n## License: MIT License\r\n\r\napt -y update\r\napt -y --no-install-recommends install curl lib32gcc-s1 ca-certificates\r\n\r\n# Download and install SteamCMD\r\ncd \/tmp\r\nmkdir -p \"\/mnt\/server\/steamcmd\" \"\/mnt\/server\/steamapps\"\r\ncurl -sSL -o steamcmd.tar.gz https:\/\/steamcdn-a.akamaihd.net\/client\/installer\/steamcmd_linux.tar.gz\r\ntar -xzvf steamcmd.tar.gz -C \/mnt\/server\/steamcmd\r\ncd \/mnt\/server\/steamcmd\r\n\r\n# SteamCMD fails otherwise for some reason, even running as root.\r\n# This is changed at the end of the install process anyways.\r\nchown -R root:root \/mnt\r\nexport HOME=\/mnt\/server\r\n\r\n# Install game server using SteamCMD\r\n.\/steamcmd.sh +force_install_dir \/mnt\/server \"+login \\\"${STEAM_USER}\\\" \\\"${STEAM_PASS}\\\"\" +app_update ${STEAMCMD_APPID} ${STEAMCMD_EXTRA_FLAGS} validate +quit\r\n\r\n# Set up 32 bit libraries\r\nmkdir -p \/mnt\/server\/.steam\/sdk32\r\ncp -v linux32\/steamclient.so ..\/.steam\/sdk32\/steamclient.so\r\n\r\n# Set up 64 bit libraries\r\nmkdir -p \/mnt\/server\/.steam\/sdk64\r\ncp -v linux64\/steamclient.so ..\/.steam\/sdk64\/steamclient.so\r\n\r\n# Arma 3 setup\r\ncd \/mnt\/server\/\r\n\r\nmkdir -p \"\/mnt\/server\/.local\/share\/DayZ\" \"\/mnt\/server\/.local\/share\/DayZ - Other Profiles\"\r\n\r\n[[ -f basic.cfg ]] || curl -sSLO ${BASIC_URL}\r\n[[ -f server.cfg ]] || curl -sSLO ${BASIC_URL%\/*}\/server.cfg\r\nchmod 755 basic.cfg server.cfg",
             "container": "ghcr.io\/parkervcp\/installers:debian",
             "entrypoint": "bash"
         }
     },
-    "variables": [{
+    "variables": [
+        {
             "name": "[REQUIRED] Steam Username",
             "description": "Used for installation and updates. Account does not need to own Arma 3, but MUST BE a VALID Steam account (anonymous login cannot be used). For security reasons it is recommended that you create a new Steam account just for your dedicated servers. *This info is not visible to the server owner.*",
             "env_variable": "STEAM_USER",
@@ -60,7 +62,7 @@
             "default_value": "DayZServer_x64",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|string|in:arma3server,arma3server_x64,arma3serverprofiling,arma3serverprofiling_x64"
+            "rules": "required|string"
         },
         {
             "name": "Extra Startup Parameters",
@@ -100,7 +102,7 @@
         },
         {
             "name": "Disable Mod Downloads\/Updates",
-            "description": "If the Steam account does not own the base Arma 3 game, Steam Workshop mod downloads\/updates will not work. If so, this setting allows disabling of this feature to avoid errors. (1 Disable | 0 Enable)",
+            "description": "If the Steam account does not own the base DayZ game, Steam Workshop mod downloads\/updates will not work. If so, this setting allows disabling of this feature to avoid errors. (1 Disable | 0 Enable)",
             "env_variable": "DISABLE_MOD_UPDATES",
             "default_value": "0",
             "user_viewable": false,
@@ -163,7 +165,7 @@
         },
         {
             "name": "[Advanced] Extra Flags for SteamCMD",
-            "description": "[This will override \"Download Creator DLCs\" if used] Only used when checking for server updates, and typically used for grabbing beta builds. Example: -beta profiling -betapassword CautionSpecialProfilingAndTestingBranchArma3",
+            "description": "[This will override \"Download Creator DLCs\" if used] Only used when checking for server updates, and typically used for grabbing beta builds. Example: -beta profiling",
             "env_variable": "STEAMCMD_EXTRA_FLAGS",
             "default_value": "",
             "user_viewable": true,
@@ -208,9 +210,9 @@
         },
         {
             "name": "[Advanced] basic.cfg URL",
-            "description": "URL to a valid Arma 3 basic.cfg file. The \"Basic\" configuration file is used during server runtime for advanced network performance tuning. Because it is a required file, this URL is used to download it during installation, or if the file is found missing during startup.",
+            "description": "URL to a valid DayZ basic.cfg file. The \"Basic\" configuration file is used during server runtime for advanced network performance tuning. Because it is a required file, this URL is used to download it during installation, or if the file is found missing during startup.",
             "env_variable": "BASIC_URL",
-            "default_value": "https:\/\/raw.githubusercontent.com\/Schmoaaaaah\/eggs\/master\/game_eggs\/steamcmd_servers\/dayz\/egg-dayz-config\/server.cfg",
+            "default_value": "https:\/\/raw.githubusercontent.com\/schmoaaaaah\/eggs\/master\/game_eggs\/steamcmd_servers\/dayz\/egg-dayz-config\/server.cfg",
             "user_viewable": false,
             "user_editable": false,
             "rules": "required|url"
